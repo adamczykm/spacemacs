@@ -419,7 +419,8 @@ _J_: org-forward-heading-same-level
 _l_: org-down-element
 
 "
-     ("h" org-up-element)
+     ("h" (progn (org-up-element) (org-cycle)))
+     ("H" org-up-element)
      ("k" org-previous-visible-heading)
      ("j" org-next-visible-heading)
      ("l" org-down-element)
