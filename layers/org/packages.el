@@ -20,6 +20,7 @@
     flyspell
     gnuplot
     htmlize
+    hydra
     ;; org and org-agenda are installed by `org-plus-contrib'
     (org :location built-in)
     (org-agenda :location built-in)
@@ -394,3 +395,38 @@ Will work on both org-mode and any mode that accepts plain html."
 (defun org/init-htmlize ()
  (use-package htmlize
     :defer t))
+
+
+(defun org/init-hydra ()
+  (use-package hydra
+    :config
+    (progn
+      (org-hydra//define-the-hydra)
+      (evil-define-key 'normal org-mode-map
+        "." 'hydra-org/body))))
+
+(defun org-hydra//define-the-hydra ()
+   (defhydra hydra-org (:color red
+                               :hint  nil)
+     "
+^Movement^                               ^Visibility^
+^^^^^^^^^---------------------------------------------
+_h_: org-up-element                      _c_: org-cycle
+_k_: org-previous-visible-heading        _n_: org-narrow-to-subtree
+_K_: org-backward-heading-same-level     _N_: wide
+_j_: org-next-visible-heading
+_J_: org-forward-heading-same-level
+_l_: org-down-element
+
+"
+     ("h" org-up-element)
+     ("k" org-previous-visible-heading)
+     ("j" org-next-visible-heading)
+     ("l" org-down-element)
+     ("K" org-backward-heading-same-level)
+     ("J" org-forward-heading-same-level)
+     ;; visibility
+     ("n" org-narrow-to-subtree)
+     ("N" widen)
+     ("c" org-cycle)
+     ("q" nil "quit" :color blue)))
