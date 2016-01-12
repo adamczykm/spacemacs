@@ -405,28 +405,32 @@ Will work on both org-mode and any mode that accepts plain html."
         "." 'hydra-org/body))))
 
 (defun org-hydra//define-the-hydra ()
-   (defhydra hydra-org (:color red
-                               :hint  nil)
-     "
-^Movement^                               ^Visibility^
-^^^^^^^^^---------------------------------------------
-_h_: org-up-element                      _c_: org-cycle
+  (defhydra hydra-org (:color red
+                              :hint  nil)
+    "
+^Movement^                               ^Visibility^                    ^Jumps
+^^^^^^^^^------------------------------------------------------------------------------------
+_h_: org-up-element                      _c_: org-cycle                  _g_: jump-in-buffer
 _k_: org-previous-visible-heading        _n_: org-narrow-to-subtree
-_K_: org-backward-heading-same-level     _N_: wide
-_j_: org-next-visible-heading
-_J_: org-forward-heading-same-level
+_K_: org-backward-heading-same-level     _N_: wide                       ^Modifying^
+_j_: org-next-visible-heading                                          ------------------------
+_J_: org-forward-heading-same-level                                      _t_: org-todo
 _l_: org-down-element
 
 "
-     ("h" (progn (org-up-element) (org-cycle)))
-     ("H" org-up-element)
-     ("k" org-previous-visible-heading)
-     ("j" org-next-visible-heading)
-     ("l" org-down-element)
-     ("K" org-backward-heading-same-level)
-     ("J" org-forward-heading-same-level)
-     ;; visibility
-     ("n" org-narrow-to-subtree)
-     ("N" widen)
-     ("c" org-cycle)
-     ("q" nil "quit" :color blue)))
+    ("h" (progn (org-up-element) (org-cycle)))
+    ("H" org-up-element)
+    ("k" org-previous-visible-heading)
+    ("j" org-next-visible-heading)
+    ("l" org-down-element)
+    ("K" org-backward-heading-same-level)
+    ("J" org-forward-heading-same-level)
+    ;; visibility
+    ("n" org-narrow-to-subtree)
+    ("N" widen)
+    ("c" org-cycle)
+    ("q" nil "quit" :color blue)
+    ;; jumps
+    ("g" spacemacs/jump-in-buffer :color pink)
+    ;; modifying
+    ("t" org-todo :color pink)))
