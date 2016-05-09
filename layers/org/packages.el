@@ -21,12 +21,22 @@
     htmlize
     hydra
     ;; org and org-agenda are installed by `org-plus-contrib'
+
+
     (org :location built-in)
     (org-agenda :location built-in)
     (org-plus-contrib :step pre)
     org-bullets
     ;; org-mime is installed by `org-plus-contrib'
     (org-mime :location built-in)
+    (org-crypt :location built-in)
+    ;; org
+    ;; org-agenda
+    ;; (org-plus-contrib :step pre)
+    ;; org-bullets
+    ;; ;; org-mime is installed by `org-plus-contrib'
+    ;; org-mime
+    ;; org-crypt
     org-pomodoro
     org-present
     org-repo-todo
@@ -125,7 +135,7 @@ Will work on both org-mode and any mode that accepts plain html."
             (forward-char -8))))
       (spacemacs/set-leader-keys-for-major-mode 'org-mode
         "'" 'org-edit-special
-        "c" 'org-capture
+        ;; "c" 'org-capture
         "d" 'org-deadline
         "D" 'org-insert-drawer
         "e" 'org-export-dispatch
@@ -308,6 +318,23 @@ Will work on both org-mode and any mode that accepts plain html."
   (use-package org-bullets
     :defer t
     :init (add-hook 'org-mode-hook 'org-bullets-mode)))
+
+(defun org/init-org-crypt ()
+  (use-package org-crypt
+    :defer t
+    :init
+    (progn
+      (require 'org-crypt)
+      (org-crypt-use-before-save-magic)
+      (setq org-tags-exclude-from-inheritance (quote ("crypt"))))
+    :config
+    (progn
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "cd" 'org-decrypt-entry)
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "ce" 'org-encrypt-entry)
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "cc" 'org-capture))))
 
 (defun org/init-org-mime ()
   (use-package org-mime

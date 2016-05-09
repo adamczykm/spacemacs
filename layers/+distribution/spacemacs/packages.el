@@ -1551,8 +1551,7 @@ Open junk file using helm, with `prefix-arg' search in junk files"
           (kbd "K") 'neotree-select-up-node
           (kbd "l") 'spacemacs/neotree-expand-or-open
           (kbd "L") 'neotree-select-next-sibling-node
-          (kbd "Q") 'neotree-hide
-          (kbd "q") 'neotree-hide
+          (kbd "Q") 'neotree-toggle
           (kbd "r") 'neotree-rename-node
           (kbd "R") 'neotree-change-root
           (kbd "p") 'neotree-projectile-action
