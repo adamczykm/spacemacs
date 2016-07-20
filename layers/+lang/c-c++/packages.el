@@ -18,6 +18,7 @@
     company
     company-c-headers
     company-ycmd
+    emacs-ide
     flycheck
     gdb-mi
     helm-cscope
@@ -26,6 +27,8 @@
     stickyfunc-enhance
     ycmd
     xcscope
+    rtags
+    cmake-ide
     ))
 
 (unless (version< emacs-version "24.4")
@@ -140,3 +143,19 @@
     :post-init
     (dolist (mode '(c-mode c++-mode))
       (spacemacs/setup-helm-cscope mode))))
+
+;; (defun c-c++/pre-init-rtags ()
+
+(defun c-c++/init-rtags ()
+  (use-package rtags
+    :init
+    (progn
+      (require 'flycheck)
+      (require 'company))))
+
+(defun c-c++/init-cmake-ide ()
+  (use-package cmake-ide
+    :init
+    (progn 
+           (autoload 'cmake-ide "cmake-ide" nil t)
+           (cmake-ide-setup))))
