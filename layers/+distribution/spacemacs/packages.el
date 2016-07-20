@@ -74,6 +74,7 @@
         pcre2el
         rainbow-delimiters
         recentf
+        rtags
         smartparens
         smooth-scrolling
         spaceline
