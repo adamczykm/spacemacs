@@ -17,6 +17,7 @@
     (evil-org :location local)
     evil-surround
     gnuplot
+    hydra
     htmlize
     mu4e
     ;; ob, org and org-agenda are installed by `org-plus-contrib'
@@ -26,6 +27,7 @@
     org-download
     ;; org-mime is installed by `org-plus-contrib'
     (org-mime :location built-in)
+    (org-crypt :location built-in)
     org-pomodoro
     org-present
     (org-projectile :toggle (configuration-layer/package-usedp 'projectile))
@@ -168,7 +170,7 @@ Will work on both org-mode and any mode that accepts plain html."
         (spacemacs/declare-prefix-for-mode 'org-mode (car prefix) (cdr prefix)))
       (spacemacs/set-leader-keys-for-major-mode 'org-mode
         "'" 'org-edit-special
-        "c" 'org-capture
+        ;; "c" 'org-capture
         "d" 'org-deadline
         "D" 'org-insert-drawer
         "e" 'org-export-dispatch
@@ -288,7 +290,10 @@ Will work on both org-mode and any mode that accepts plain html."
 
       (define-key global-map "\C-cl" 'org-store-link)
       (define-key global-map "\C-ca" 'org-agenda)
-      (define-key global-map "\C-cc" 'org-capture))
+      (define-key global-map "\C-cc" 'org-capture)
+      (org-hydra//define-the-hydra)
+      (evil-define-key 'normal org-mode-map
+        "." 'hydra-org/body) )
     :config
     (progn
       (setq org-default-notes-file "notes.org")
@@ -536,3 +541,60 @@ Headline^^            Visit entry^^               Filter^^                    Da
       (if agenda-files
           (find-file (first agenda-files))
         (user-error "Error: No agenda files configured, nothing to display.")))))
+
+;; (defun org/init-hydra ()
+;;   (use-package hydra
+;;     :config
+;;     (progn
+;;       (org-hydra//define-the-hydra)
+;;       (evil-define-key 'normal org-mode-map
+;;         "." 'hydra-org/body))))
+
+(defun org/init-org-crypt ()
+  (use-package org-crypt
+    :defer t
+    :init
+    (progn
+      (require 'org-crypt)
+      (org-crypt-use-before-save-magic)
+      (setq org-tags-exclude-from-inheritance (quote ("crypt"))))
+    :config
+    (progn
+      ;; (spacemacs/declare-prefix "c" "org")
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "cd" 'org-decrypt-entry)
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "ce" 'org-encrypt-entry)
+      (spacemacs/set-leader-keys-for-major-mode 'org-mode
+        "cc" 'org-capture))))
+
+(defun org-hydra//define-the-hydra ()
+  (defhydra hydra-org (:color red
+                              :hint  nil)
+    "
+^Movement^                               ^Visibility^                    ^Jumps
+^^^^^^^^^------------------------------------------------------------------------------------
+_h_: org-up-element                      _c_: org-cycle                  _g_: jump-in-buffer
+_k_: org-previous-visible-heading        _n_: org-narrow-to-subtree
+_K_: org-backward-heading-same-level     _N_: wide                       ^Modifying^
+_j_: org-next-visible-heading                                          ------------------------
+_J_: org-forward-heading-same-level                                      _t_: org-todo
+_l_: org-down-element
+
+"
+    ("h" (progn (org-up-element) (org-cycle)))
+    ("H" org-up-element)
+    ("k" org-previous-visible-heading)
+    ("j" org-next-visible-heading)
+    ("l" org-down-element)
+    ("K" org-backward-heading-same-level)
+    ("J" org-forward-heading-same-level)
+    ;; visibility
+    ("n" org-narrow-to-subtree)
+    ("N" widen)
+    ("c" org-cycle)
+    ("q" nil "quit" :color blue)
+    ;; jumps
+    ("g" spacemacs/jump-in-buffer :color pink)
+    ;; modifying
+    ("t" org-todo :color pink)))
