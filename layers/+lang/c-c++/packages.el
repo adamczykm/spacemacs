@@ -87,11 +87,19 @@
     :defer t
     :init (push 'company-c-headers company-backends-c-mode-common)))
 
+
+(defun setup-flycheck-clang-project-path ()
+  (when-let ((root (ignore-errors (projectile-project-root))))
+    (add-to-list
+     (make-variable-buffer-local 'flycheck-clang-include-path)
+     root)))
+
 (defun c-c++/post-init-flycheck ()
   (dolist (mode '(c-mode c++-mode))
     (spacemacs/add-flycheck-hook mode))
   (when c-c++-enable-clang-support
-    (spacemacs/add-to-hooks 'c-c++/load-clang-args '(c-mode-hook c++-mode-hook))))
+    (spacemacs/add-to-hooks 'c-c++/load-clang-args '(c-mode-hook c++-mode-hook)))
+  (add-hook 'c++-mode-hook 'setup-flycheck-clang-project-path))
 
 (defun c-c++/post-init-ggtags ()
   (add-hook 'c-mode-local-vars-hook #'spacemacs/ggtags-mode-enable)
