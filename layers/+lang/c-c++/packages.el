@@ -28,7 +28,53 @@
     stickyfunc-enhance
     ycmd
     xcscope
+    irony
+    rtags
+    company-rtags
+;    rtags-helm
+    cmake-ide
     ))
+
+(defun c-c++/init-rtags ()
+  (use-package rtags
+    :defer t
+    :init
+    ()))
+
+(defun c-c++/init-irony ()
+  (use-package irony
+    :defer t
+    :init
+    (progn
+      (spacemacs/add-to-hook 'irony-mode '(c++-mode-hook c-mode-hook objc-mode-hook))
+
+      (defun my-irony-mode-hook ()
+        (define-key irony-mode-map [remap completion-at-point]
+          'irony-completion-at-point-async)
+        (define-key irony-mode-map [remap complete-symbol]
+          'irony-completion-at-point-async))
+
+      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))))
+
+(defun c-c++/init-company-rtags ()
+  (use-package company-rtags
+    :defer t
+    :init
+    ()))
+
+; (defun c-c++/init-rtags-helm ()
+;   (use-package rtags-helm
+;     :defer t
+;     :init
+;     (progn (require 'rtags)
+;            (require 'helm))))
+
+(defun c-c++/init-cmake-ide ()
+  (use-package cmake-ide
+    :defer t
+    :init
+    (progn (cmake-ide-setup))))
 
 (defun c-c++/init-cc-mode ()
   (use-package cc-mode
