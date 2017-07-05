@@ -17,7 +17,6 @@
     (evil-org :location local)
     evil-surround
     gnuplot
-    hydra
     htmlize
     mu4e
     ;; ob, org and org-agenda are installed by `org-plus-contrib'
