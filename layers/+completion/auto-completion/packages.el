@@ -186,7 +186,7 @@
             helm-yas-display-key-on-candidate t)
       ;; on multiple keys, fall back to completing read
       ;; typically this means helm
-      (setq yas-prompt-functions '(yas-completing-prompt))
+      ;; (setq yas-prompt-functions '(yas-completing-prompt))
       ;; disable yas minor mode map
       ;; use hippie-expand instead
       (setq yas-minor-mode-map (make-sparse-keymap))

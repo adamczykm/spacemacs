@@ -32,7 +32,7 @@
     rtags
     company-rtags
 ;    rtags-helm
-    cmake-ide
+    ;; cmake-ide
     ))
 
 (defun c-c++/init-rtags ()
@@ -70,11 +70,11 @@
 ;     (progn (require 'rtags)
 ;            (require 'helm))))
 
-(defun c-c++/init-cmake-ide ()
-  (use-package cmake-ide
-    :defer t
-    :init
-    (progn (cmake-ide-setup))))
+;; (defun c-c++/init-cmake-ide ()
+;;   (use-package cmake-ide
+;;     :defer t
+;;     :init
+;;     (progn (cmake-ide-setup))))
 
 (defun c-c++/init-cc-mode ()
   (use-package cc-mode
