@@ -32,6 +32,7 @@
     pippel
     py-isort
     pyenv-mode
+    poetry
     (pylookup :location local)
     pytest
     (python :location built-in)
@@ -50,6 +51,14 @@
 
     ;; packages for Microsoft's pyright language server
     (lsp-pyright :requires lsp-mode)))
+
+(defun python/init-poetry ()
+  (use-package poetry
+    :commands (poetry)
+    :init
+    (progn
+      (spacemacs/set-leader-keys-for-major-mode 'python-mode
+        "p" 'poetry))))
 
 (defun python/init-anaconda-mode ()
   (use-package anaconda-mode
